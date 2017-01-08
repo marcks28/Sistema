@@ -11,14 +11,12 @@ import modelo.data.interfaces.IModelBase;
  *
  * @author edsonmarcks
  */
-public class Fornecedor implements IModelBase{
-    private long  id;
-    private String razaoSocial;
-    private String CNPJ;
-    private String telefone;
+public class InstitucaoDestino  implements IModelBase{
+    private long id;
+    private String descricao;
     private String logradouro;
+    private String telefone;
 
-    @Override
     public long getId() {
         return id;
     }
@@ -27,20 +25,20 @@ public class Fornecedor implements IModelBase{
         this.id = id;
     }
 
-    public String getRazaoSocial() {
-        return razaoSocial;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public String getCNPJ() {
-        return CNPJ;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setCNPJ(String CNPJ) {
-        this.CNPJ = CNPJ;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getTelefone() {
@@ -50,13 +48,7 @@ public class Fornecedor implements IModelBase{
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-
-    public String getLogradouro() {
-        return logradouro;
-    }
-
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }   
+    
+    
     
 }

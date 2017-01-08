@@ -8,14 +8,13 @@ package modelo.data.interfaces;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Predicate;
-import modelo.ImodelBase;
 
 /**
  *
  * @author edsonmarcks
  * @param <T>
  */
-public interface IOperation<T extends ImodelBase>{
+public interface IOperation<T extends IModelBase>{
     public void Save(T entity) throws SQLException;
     public void Update(T entity) throws SQLException;
     public void Delete(T entity) throws SQLException;

@@ -5,11 +5,13 @@
  */
 package modelo;
 
+import modelo.data.interfaces.IModelBase;
+
 /**
  *
  * @author edsonmarcks
  */
-public class Usuario implements ImodelBase{
+public class Usuario implements IModelBase{
     private long id;
     private String login;
     private String senha;
