@@ -19,7 +19,7 @@ public class UsuarioDAL extends ComandosSQL implements IUsuarioDAL {
 
     @Override
     public void Save(Usuario entity) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "";
     }
 
     @Override
