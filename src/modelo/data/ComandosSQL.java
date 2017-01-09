@@ -34,7 +34,12 @@ public class ComandosSQL {
         for (Object obj : values) {
             if (obj instanceof LocalDateTime) {
                 ps.setTimestamp(positiion, java.sql.Timestamp.valueOf((LocalDateTime) obj));
-            } else {
+            } 
+            else if( obj instanceof Long)
+            {
+                ps.setLong(positiion, (long) obj );
+            }
+            else {
                 ps.setObject(positiion, obj);
             }
 
