@@ -12,13 +12,13 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import modelo.Estoque;
-import modelo.data.interfaces.IEstoque;
+import modelo.data.interfaces.IEstoqueDAL;
 
 /**
  *
  * @author edsonmarcks
  */
-public class EstoqueDAL extends ComandosSQL implements IEstoque {
+public class EstoqueDAL extends ComandosSQL implements IEstoqueDAL {
 
     @Override
     public void Save(Estoque entity) throws SQLException {

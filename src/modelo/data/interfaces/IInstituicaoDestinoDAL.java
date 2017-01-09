@@ -5,12 +5,12 @@
  */
 package modelo.data.interfaces;
 
-import modelo.Estoque;
+import modelo.InstituicaoDestino;
 
 /**
  *
  * @author edsonmarcks
  */
-public interface IEstoque extends IOperation<Estoque>{
+public interface IInstituicaoDestinoDAL extends IOperation<InstituicaoDestino>{
     
 }

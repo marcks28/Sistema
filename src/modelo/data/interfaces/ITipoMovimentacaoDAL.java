@@ -5,12 +5,12 @@
  */
 package modelo.data.interfaces;
 
-import modelo.InstituicaoDestino;
+import modelo.TipoMovimentacao;
 
 /**
  *
  * @author edsonmarcks
  */
-public interface IInstituicaoDestino extends IOperation<InstituicaoDestino>{
+public interface ITipoMovimentacaoDAL extends IOperation<TipoMovimentacao>{
     
 }

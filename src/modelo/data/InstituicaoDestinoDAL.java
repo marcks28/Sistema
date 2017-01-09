@@ -12,13 +12,13 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import modelo.InstituicaoDestino;
-import modelo.data.interfaces.IInstituicaoDestino;
+import modelo.data.interfaces.IInstituicaoDestinoDAL;
 
 /**
  *
  * @author edsonmarcks
  */
-public class InstituicaoDestinoDAL extends ComandosSQL implements IInstituicaoDestino {
+public class InstituicaoDestinoDAL extends ComandosSQL implements IInstituicaoDestinoDAL {
 
     @Override
     public void Save(InstituicaoDestino entity) throws SQLException {
