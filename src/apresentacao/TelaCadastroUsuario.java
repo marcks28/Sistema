@@ -5,6 +5,7 @@
  */
 package apresentacao;
 
+import apresentacao.utils.Mensagens;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -181,8 +182,7 @@ public class TelaCadastroUsuario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Deseja realmente sair?", "Saindo de cadastro de usuários",
-                JOptionPane.YES_NO_OPTION , JOptionPane.QUESTION_MESSAGE, new ImageIcon( TelaCadastroUsuario.class.getResource("/apresentacao/icons/cancel_32.png") )))
+        if(JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?"))
         {
             this.dispose();
         }
