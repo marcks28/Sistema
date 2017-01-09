@@ -34,12 +34,9 @@ public class ComandosSQL {
         for (Object obj : values) {
             if (obj instanceof LocalDateTime) {
                 ps.setTimestamp(positiion, java.sql.Timestamp.valueOf((LocalDateTime) obj));
-            } 
-            else if( obj instanceof Long)
-            {
-                ps.setLong(positiion, (long) obj );
-            }
-            else {
+            } else if (obj instanceof Long) {
+                ps.setLong(positiion, (long) obj);
+            } else {
                 ps.setObject(positiion, obj);
             }
 
@@ -56,7 +53,7 @@ public class ComandosSQL {
         }
 
         ps = fabrica.getConnection().prepareStatement(sql);
-        if (values.length > 0) {
+        if (values != null) {
             int positiion = 1;
 
             for (Object obj : values) {
@@ -68,8 +65,11 @@ public class ComandosSQL {
                 positiion++;
             }
         }
-        
+
         rs = ps.executeQuery();
         return rs;
     }
+
+
+
 }

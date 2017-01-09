@@ -11,12 +11,13 @@ import modelo.data.interfaces.IModelBase;
  *
  * @author edsonmarcks
  */
-public class InstitucaoDestino  implements IModelBase{
+public class InstituicaoDestino  implements IModelBase{
     private long id;
     private String descricao;
     private String logradouro;
     private String telefone;
 
+    @Override
     public long getId() {
         return id;
     }
