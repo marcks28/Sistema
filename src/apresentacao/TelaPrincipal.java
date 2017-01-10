@@ -5,6 +5,10 @@
  */
 package apresentacao;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author edsonmarcks
@@ -50,6 +54,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de controle de estoque");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -59,6 +68,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         btnCadastrar.setFocusable(false);
         btnCadastrar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCadastrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         jToolBar1.add(btnCadastrar);
 
         btnEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/entrada_estoque.png"))); // NOI18N
@@ -203,6 +217,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnCadFornecedoresActionPerformed
 
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
@@ -232,8 +255,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new TelaPrincipal().setVisible(true);
+                try {
+                    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if ("DarkStar".equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                } catch (UnsupportedLookAndFeelException exc) {
+                    exc.printStackTrace();
+                } catch (ClassNotFoundException exc) {
+                    exc.printStackTrace();
+                } catch (InstantiationException exc) {
+                    exc.printStackTrace();
+                } catch (IllegalAccessException exc) {
+                    exc.printStackTrace();
+                }
 
             }
         });

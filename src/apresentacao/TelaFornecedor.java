@@ -45,10 +45,10 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         txtLogradouro = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         FornecedorTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -178,17 +178,17 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             FornecedorTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926366_new10.png"))); // NOI18N
-        jButton1.setText("Novo");
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926366_new10.png"))); // NOI18N
+        btnNovo.setText("Novo");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926464_icons_save.png"))); // NOI18N
-        jButton2.setText("Salvar");
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926464_icons_save.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
-        jButton3.setText("Excluir");
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
-        jButton4.setText("Cancelar");
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,17 +203,17 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane1))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addComponent(btnCancelar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCancelar, btnExcluir, btnNovo, btnSalvar});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,14 +224,14 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnNovo)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnCancelar))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCancelar, btnExcluir, btnNovo, btnSalvar});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -245,10 +245,10 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable FornecedorTable;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
