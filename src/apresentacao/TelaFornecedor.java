@@ -5,9 +5,11 @@
  */
 package apresentacao;
 
+import apresentacao.utils.ControleCampos;
 import apresentacao.utils.Mensagens;
-import javax.swing.ImageIcon;
+import controle.ControleFornecedor;
 import javax.swing.JOptionPane;
+import modelo.Fornecedor;
 
 /**
  *
@@ -15,11 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class TelaFornecedor extends javax.swing.JInternalFrame {
 
+    private ControleFornecedor controleFornecedor;
+
     /**
      * Creates new form TelaFornecedor
      */
     public TelaFornecedor() {
         initComponents();
+        controleFornecedor = new ControleFornecedor();
     }
 
     /**
@@ -78,13 +83,25 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Código :");
 
-        jLabel3.setText("Razão social :");
+        jLabel3.setText("Razão social* :");
 
-        jLabel4.setText("CNPJ :");
+        jLabel4.setText("CNPJ* :");
 
-        jLabel5.setText("Telefone :");
+        jLabel5.setText("Telefone* :");
 
-        jLabel6.setText("Logradouro :");
+        jLabel6.setText("Logradouro* :");
+
+        txtCodigo.setEditable(false);
+        txtCodigo.setEnabled(false);
+        txtCodigo.setName("Código"); // NOI18N
+
+        txtRazao.setName("Razão social"); // NOI18N
+
+        txtCNPJ.setName("CNPJ"); // NOI18N
+
+        txtTelafone.setName("Telefone"); // NOI18N
+
+        txtLogradouro.setName("Logradouro"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -183,6 +200,11 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926464_icons_save.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -237,10 +259,45 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        if(JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?")){
+        if (JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?")) {
             this.dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+
+        try {
+            //valida o formulário
+            ControleCampos.validadeCampos(new Object[]{
+                txtRazao,
+                txtCNPJ,
+                txtTelafone,
+                txtLogradouro
+
+            });
+            Fornecedor fornecedor = new Fornecedor();
+            if (!txtCodigo.getText().trim().isEmpty() && !txtCodigo.getText().trim().equals("")) {
+                fornecedor.setId(Long.parseLong(txtCodigo.getText()));
+            }
+            fornecedor.setRazaoSocial(txtRazao.getText());
+            fornecedor.setCNPJ(txtCNPJ.getText());
+            fornecedor.setTelefone(txtTelafone.getText());
+            fornecedor.setLogradouro(txtLogradouro.getText());
+            controleFornecedor.saveUpdate(fornecedor);
+            Mensagens.sucess(this);
+            ControleCampos.limparCampos(new Object[]{
+                txtRazao,
+                txtCNPJ,
+                txtTelafone,
+                txtLogradouro,
+                txtCodigo
+            });
+
+        } catch (Exception e) {
+            Mensagens.error(rootPane, "Falha na execução", e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -263,4 +320,5 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtRazao;
     private javax.swing.JFormattedTextField txtTelafone;
     // End of variables declaration//GEN-END:variables
+
 }

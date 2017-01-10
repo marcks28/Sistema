@@ -259,23 +259,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             @Override
             public void run() {
                 new TelaPrincipal().setVisible(true);
-                try {
-                    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                        if ("DarkStar".equals(info.getName())) {
-                            UIManager.setLookAndFeel(info.getClassName());
-                            break;
-                        }
-                    }
-                } catch (UnsupportedLookAndFeelException exc) {
-                    exc.printStackTrace();
-                } catch (ClassNotFoundException exc) {
-                    exc.printStackTrace();
-                } catch (InstantiationException exc) {
-                    exc.printStackTrace();
-                } catch (IllegalAccessException exc) {
-                    exc.printStackTrace();
-                }
-
             }
         });
 

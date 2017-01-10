@@ -28,4 +28,18 @@ public class ControleCampos {
             }
         }
     }
+    
+    public static void validadeCampos(Object[] fields) throws Exception
+    {
+        for(Object field : fields )
+        {
+            if(field instanceof JTextField)
+            {
+                if(((JTextField) field).getText().trim().isEmpty()  || ((JTextField) field).getText().trim().equals(""))
+                {
+                    throw new Exception("o campo "+((JTextField) field).getName()+" é obrigatório!");
+                }
+            }
+        }
+    }
 }
