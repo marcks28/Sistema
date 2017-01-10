@@ -5,9 +5,11 @@
  */
 package apresentacao;
 
+import apresentacao.utils.ControleCampos;
 import apresentacao.utils.Mensagens;
-import javax.swing.ImageIcon;
+import controle.UsuarioControle;
 import javax.swing.JOptionPane;
+import modelo.Usuario;
 
 /**
  *
@@ -15,6 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class TelaCadastroUsuario extends javax.swing.JInternalFrame {
 
+    private Usuario usuario;
+    private UsuarioControle controle;
     /**
      * Creates new form TelaCadastroUsuario
      */
@@ -136,6 +140,11 @@ public class TelaCadastroUsuario extends javax.swing.JInternalFrame {
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/save_32.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/cancel_32.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -192,6 +201,31 @@ public class TelaCadastroUsuario extends javax.swing.JInternalFrame {
         formInternalFrameClosing(null);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            usuario = new Usuario();
+            usuario.setLogin(txtLogin.getText());
+            usuario.setSenha(String.valueOf(   pwdSenha.getPassword()     ));
+            if(! String.valueOf(pwdSenha.getPassword()).equals(  String.valueOf(    pwdConfirm.getPassword() )  )  )
+                throw new Exception("As senhas não conferem");
+            
+            usuario.setPermissao(cbPermissao.getSelectedItem().toString());
+            controle = new UsuarioControle();
+            controle.saveUpdate(usuario);
+            Mensagens.sucess(this);
+            controle = null;
+            usuario = null;
+            ControleCampos.limparCampos(new Object[]{
+                txtLogin,
+                pwdSenha,
+                pwdConfirm
+            });
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao executar a operação", e.getMessage());
+        }
+            
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -207,4 +241,8 @@ public class TelaCadastroUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JPasswordField pwdSenha;
     private javax.swing.JTextField txtLogin;
     // End of variables declaration//GEN-END:variables
+
+   
+   
+
 }
