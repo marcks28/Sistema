@@ -8,7 +8,10 @@ package apresentacao;
 import apresentacao.utils.ControleCampos;
 import apresentacao.utils.Mensagens;
 import controle.ControleFornecedor;
+import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.Fornecedor;
 
 /**
@@ -18,13 +21,14 @@ import modelo.Fornecedor;
 public class TelaFornecedor extends javax.swing.JInternalFrame {
 
     private ControleFornecedor controleFornecedor;
-
+    private DefaultTableModel modelo;
     /**
      * Creates new form TelaFornecedor
      */
     public TelaFornecedor() {
         initComponents();
         controleFornecedor = new ControleFornecedor();
+        carregaDadosTable();
     }
 
     /**
@@ -186,6 +190,11 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             }
         });
         FornecedorTable.getTableHeader().setReorderingAllowed(false);
+        FornecedorTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                FornecedorTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(FornecedorTable);
         if (FornecedorTable.getColumnModel().getColumnCount() > 0) {
             FornecedorTable.getColumnModel().getColumn(0).setResizable(false);
@@ -208,6 +217,11 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -292,12 +306,50 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
                 txtLogradouro,
                 txtCodigo
             });
+            carregaDadosTable();
 
         } catch (Exception e) {
             Mensagens.error(rootPane, "Falha na execução", e.getMessage());
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            Fornecedor fornecedor = new Fornecedor();
+            if (!txtCodigo.getText().trim().isEmpty() && !txtCodigo.getText().trim().equals("")) {
+                fornecedor.setId(Long.parseLong(txtCodigo.getText()));
+            }
+            controleFornecedor.delete(fornecedor);
+            Mensagens.sucess(this);
+            ControleCampos.limparCampos(new Object[]{
+                txtRazao,
+                txtCNPJ,
+                txtTelafone,
+                txtLogradouro,
+                txtCodigo
+            });
+            carregaDadosTable();
+
+        } catch (SQLException e) {
+            Mensagens.error(this, "Erro ao tentar excluir", e.getMessage());
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void FornecedorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FornecedorTableMouseClicked
+        try {
+            if(FornecedorTable.getRowCount() > 0)
+            {
+                txtCodigo.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 0).toString());
+                txtRazao.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 1).toString());
+                txtCNPJ.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 2).toString());
+                txtTelafone.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 3).toString());
+                txtLogradouro.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 4).toString());
+            }           
+        } catch (Exception e) {
+            Mensagens.error(rootPane);
+        }
+    }//GEN-LAST:event_FornecedorTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -321,4 +373,29 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtTelafone;
     // End of variables declaration//GEN-END:variables
 
+    
+    
+    private void carregaDadosTable()
+    {
+        try {
+            List<Fornecedor> fornecedores = controleFornecedor.getAll();
+            modelo = (DefaultTableModel) FornecedorTable.getModel();
+            modelo.setRowCount(0);
+            if(fornecedores.size() > 0)
+            {
+                fornecedores.stream().forEach((Fornecedor f) -> {
+                    modelo.addRow(new Object[]{
+                        f.getId(),
+                        f.getRazaoSocial(),
+                        f.getCNPJ(),
+                        f.getTelefone(),
+                        f.getLogradouro()
+                    });
+                });
+            }
+            
+        } catch (SQLException e) {
+            Mensagens.error(this,"Erro ao carregar dados",e.getMessage());
+        }
+    }
 }

@@ -63,7 +63,7 @@ public class FornecedorDAL  extends ComandosSQL implements IFornecedorDAL{
             fornecedor.setCNPJ(rs.getString("cnpj"));
             fornecedor.setRazaoSocial(rs.getString("nome"));
             fornecedor.setTelefone(rs.getString("tel"));
-            
+             fornecedor.setLogradouro(rs.getString("logradouro"));
         }
         rs.close();
         ps.closeOnCompletion();
@@ -83,6 +83,7 @@ public class FornecedorDAL  extends ComandosSQL implements IFornecedorDAL{
             fornecedor.setCNPJ(rs.getString("cnpj"));
             fornecedor.setRazaoSocial(rs.getString("nome"));
             fornecedor.setTelefone(rs.getString("tel"));
+            fornecedor.setLogradouro(rs.getString("logradouro"));
             fornecedores.add(fornecedor);
             fornecedor = null;
             
