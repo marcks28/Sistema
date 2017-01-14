@@ -128,6 +128,7 @@ public class TelaLogin extends javax.swing.JFrame {
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAcessar, btnCancelar});
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void actionCadastrar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionCadastrar
