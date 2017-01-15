@@ -1,50 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controle;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.function.Predicate;
 import modelo.Material;
+import modelo.data.MaterialDAL;
 import modelo.data.interfaces.IControle;
 
-/**
- *
- * @author edsonmarcks
- */
 public class ControleMaterial implements IControle<Material>{
+    private MaterialDAL dal;
 
+    public ControleMaterial() {
+        this.dal = new MaterialDAL();
+    }
+      
+    
     @Override
     public void saveUpdate(Material entity) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(entity.getId() >= 0)
+        {
+            dal.Update(entity);
+            
+        }else
+        {
+            dal.Save(entity);
+        }
     }
 
     @Override
     public void delete(Material entity) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dal.Delete(entity);
     }
 
     @Override
     public Material findById(long id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dal.FindId(id);
     }
 
     @Override
     public List<Material> getAll() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dal.GetAll();
     }
 
     @Override
     public List<Material> getAll(Predicate<Material> predicate) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dal.GetAll(predicate);
     }
 
     @Override
     public Material find(Predicate<Material> predicate) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return find(predicate);
     }
     
 }
