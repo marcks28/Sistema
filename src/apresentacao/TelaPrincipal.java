@@ -5,10 +5,6 @@
  */
 package apresentacao;
 
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
 /**
  *
  * @author edsonmarcks
@@ -17,13 +13,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private TelaCadastroUsuario telaCadastroUsuario;
     private TelaFornecedor telaFornecedor;
+    private TelaCategoria telaCategoria;
 
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
         initComponents();
-        
+
     }
 
     /**
@@ -121,6 +118,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         mnCadCategoria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnCadCategoria.setText("Categoria");
+        mnCadCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCadCategoriaActionPerformed(evt);
+            }
+        });
         mnCadastro.add(mnCadCategoria);
 
         mnCadMateriais.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
@@ -225,6 +227,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         setExtendedState(MAXIMIZED_BOTH);
     }//GEN-LAST:event_formWindowOpened
+
+    private void mnCadCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadCategoriaActionPerformed
+
+        if (telaCategoria == null) {
+            telaCategoria = new TelaCategoria();
+            jDesktopPane1.add(telaCategoria);
+            telaCategoria.setVisible(true);
+        } else if (telaCategoria != null) {
+            if (telaCategoria.isClosed()) {
+                telaCategoria = new TelaCategoria();
+                jDesktopPane1.add(telaCategoria);
+                telaCategoria.setVisible(true);
+            }
+        }
+
+    }//GEN-LAST:event_mnCadCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
