@@ -5,17 +5,30 @@
  */
 package apresentacao;
 
+import apresentacao.utils.Mensagens;
+import controle.ControleCategoria;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Categoria;
+
 /**
  *
  * @author edsonmarcks
  */
 public class TelaCategoria extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form TelaCategoria
-     */
+    private Categoria categoria;
+    private ControleCategoria controle;
+    private DefaultTableModel modelo;
+
     public TelaCategoria() {
         initComponents();
+        habilitar(false);
+         controle = new ControleCategoria();
+         carregar();
     }
 
     /**
@@ -51,12 +64,34 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
         setTitle("Cadastro de categorias");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setText("Código:");
 
-        txtCodigo.setEditable(false);
+        txtCodigo.setEnabled(false);
 
         jLabel2.setText("Descrição:");
 
@@ -125,18 +160,36 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        btnNovo.setMnemonic('n');
         btnNovo.setText("Novo");
+        btnNovo.setToolTipText("Pressione a tecla Alt+N para inserir uma nova categoria");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
+        btnSalvar.setMnemonic('s');
         btnSalvar.setText("Salvar");
+        btnSalvar.setToolTipText("pressione Alt+s para salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
             }
         });
 
+        btnExcluir.setMnemonic('e');
         btnExcluir.setText("Excluir");
+        btnExcluir.setToolTipText("Pressione Alt+E para excluir um registro");
 
+        btnCancelar.setMnemonic('c');
         btnCancelar.setText("Cancelar");
+        btnCancelar.setToolTipText("Pressione Alt+C para sair");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -265,8 +318,51 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        // TODO add your handling code here:
+
+        try {
+            if (txtDescricao.getText().trim().isEmpty() || txtDescricao.getText().trim().equals("")) {
+                throw new Exception("Campo descrição é obrigatório!");
+
+            }
+            categoria = new Categoria();
+            if (!txtCodigo.getText().trim().isEmpty() || !txtCodigo.getText().trim().equals("")) {
+                categoria.setId(Long.parseLong(txtCodigo.getText()));
+            }
+            categoria.setDescricao(txtDescricao.getText());
+           
+            controle.saveUpdate(categoria);
+            Mensagens.sucess(this);
+            carregar();
+            limpar();
+            habilitar(false);
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao salvar", e.getMessage());
+        }
+
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        habilitar(true);
+        limpar();
+        txtDescricao.requestFocus();
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formKeyTyped
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        if (JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?")) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_formInternalFrameClosing
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        formInternalFrameClosing(null);
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -290,4 +386,38 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDescricao;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
+
+    private void habilitar(boolean b) {
+        txtDescricao.setEnabled(b);
+        btnExcluir.setEnabled(b);
+        btnNovo.setEnabled(!b);
+        btnSalvar.setEnabled(b);
+    }
+
+    private void limpar() {
+        txtCodigo.setText("");
+        txtDescricao.setText("");
+    }
+    
+    private void carregar()
+    {
+        try {
+            List<Categoria> categorias = new ArrayList<>();
+            categorias = controle.getAll();
+            modelo = (DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0);
+            if(categorias.size() > 0)
+            {
+                categorias.stream().forEach(c-> {
+                    modelo.addRow(new Object[]{
+                        c.getId(),
+                        c.getDescricao()
+                    });
+                });               
+            }
+            categorias=null;
+        } catch (SQLException e) {
+            Mensagens.error(this, "Erro ao carregar dados", e.getMessage());
+        }
+    }
 }
