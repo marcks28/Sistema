@@ -7,9 +7,11 @@ package apresentacao;
 
 import apresentacao.utils.Mensagens;
 import controle.ControleCategoria;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.input.KeyCode;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
@@ -22,13 +24,13 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
 
     private Categoria categoria;
     private ControleCategoria controle;
-    private DefaultTableModel modelo;
+    private DefaultTableModel modelo, modelo2;
 
     public TelaCategoria() {
         initComponents();
         habilitar(false);
-         controle = new ControleCategoria();
-         carregar();
+        controle = new ControleCategoria();
+        carregar();
     }
 
     /**
@@ -235,6 +237,12 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Pesquisar");
 
+        txtPesquisar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisarKeyPressed(evt);
+            }
+        });
+
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -259,6 +267,11 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
             }
         });
         jTable2.getTableHeader().setReorderingAllowed(false);
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setMinWidth(100);
@@ -266,7 +279,14 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
             jTable2.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        btnPesquisar.setMnemonic('p');
         btnPesquisar.setText("Pesquisar");
+        btnPesquisar.setToolTipText("Alt+p para exxecutar a pesquisa");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -329,7 +349,7 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
                 categoria.setId(Long.parseLong(txtCodigo.getText()));
             }
             categoria.setDescricao(txtDescricao.getText());
-           
+
             controle.saveUpdate(categoria);
             Mensagens.sucess(this);
             carregar();
@@ -363,6 +383,33 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         formInternalFrameClosing(null);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // TODO add your handling code here:
+        pesquisar();
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        try {
+            if(jTable2.getRowCount() > 0)
+            {
+                txtCodigo.setText( modelo2.getValueAt(jTable2.getSelectedRow(), 0).toString());
+                txtDescricao.setText(modelo2.getValueAt(jTable2.getSelectedRow(), 1).toString());
+                habilitar(true);
+                jTabControle.setSelectedIndex(0);
+            }
+                       
+        } catch (Exception e) {
+            Mensagens.error(this);
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void txtPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyPressed
+        if( evt.getKeyCode() == KeyEvent.VK_ENTER )
+        {
+            pesquisar();
+        }
+    }//GEN-LAST:event_txtPesquisarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -398,26 +445,47 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
         txtCodigo.setText("");
         txtDescricao.setText("");
     }
-    
-    private void carregar()
-    {
+
+    private void carregar() {
         try {
             List<Categoria> categorias = new ArrayList<>();
             categorias = controle.getAll();
             modelo = (DefaultTableModel) jTable1.getModel();
             modelo.setRowCount(0);
-            if(categorias.size() > 0)
-            {
-                categorias.stream().forEach(c-> {
+            if (categorias.size() > 0) {
+                categorias.stream().forEach(c -> {
                     modelo.addRow(new Object[]{
                         c.getId(),
                         c.getDescricao()
                     });
-                });               
+                });
             }
-            categorias=null;
+            categorias = null;
         } catch (SQLException e) {
             Mensagens.error(this, "Erro ao carregar dados", e.getMessage());
+        }
+    }
+
+    private void pesquisar() {
+        if (!txtPesquisar.getText().trim().equals("")
+                && !txtPesquisar.getText().trim().isEmpty()) {
+            try {
+                List<Categoria> categorias = new ArrayList<>();
+                categorias = controle.getAll( c -> c.getDescricao().contains(txtPesquisar.getText()) );
+                modelo2 = (DefaultTableModel) jTable2.getModel();
+                modelo2.setRowCount(0);
+                if (categorias.size() > 0) {
+                    categorias.stream().forEach(c -> {
+                        modelo2.addRow(new Object[]{
+                            c.getId(),
+                            c.getDescricao()
+                        });
+                    });
+                }
+                categorias = null;
+            } catch (SQLException e) {
+                Mensagens.error(this, "Erro ao carregar dados", e.getMessage());
+            }
         }
     }
 }
