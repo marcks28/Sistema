@@ -5,6 +5,8 @@
  */
 package apresentacao.utils;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -39,6 +41,31 @@ public class ControleCampos {
                 {
                     throw new Exception("o campo "+((JTextField) field).getName()+" é obrigatório!");
                 }
+            }
+        }
+    }
+
+    public static void habilitar(boolean  b, Object[] fields)
+    {
+        for(Object field : fields)
+        {
+            if(field instanceof JTextField)
+            {
+                ((JTextField) field).setEditable(b);
+            }
+            else if(field instanceof JButton)
+            {
+                if(((JButton) field).getName().equals("novo"))
+                {
+                    ((JButton) field).setEnabled(!b);
+                }
+                else{
+                ((JButton) field).setEnabled(b);
+                }
+            }
+            else if(field instanceof JComboBox)
+            {
+                ((JComboBox) field).setEnabled(b);
             }
         }
     }

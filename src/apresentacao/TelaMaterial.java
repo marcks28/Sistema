@@ -5,13 +5,16 @@
  */
 package apresentacao;
 
+import apresentacao.utils.ControleCampos;
 import apresentacao.utils.Mensagens;
 import controle.ControleCategoria;
 import controle.ControleFornecedor;
 import controle.ControleMaterial;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
 import modelo.Fornecedor;
 import modelo.Material;
@@ -21,7 +24,7 @@ import modelo.Material;
  * @author edsonmarcks
  */
 public class TelaMaterial extends javax.swing.JInternalFrame {
-
+    
     private List<Fornecedor> fornecedores;
     private List<Categoria> categorias;
     private ControleFornecedor ctlFornecedor;
@@ -29,6 +32,9 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
     private ControleMaterial ctlMaterial;
     private TelaPrincipal telaPrincipal;
     private TelaFornecedor telaFornecedor;
+    private List<Material> materials;
+    private DefaultTableModel modelo;
+    private Object[] campos;
 
     /**
      * Creates new form TelaMaterial
@@ -40,8 +46,10 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         ctlMaterial = new ControleMaterial();
         preencheComboFornecedor();
         preencheComboCategoria();
+        materials = new ArrayList<>();
+        carregarMateriais();
     }
-
+    
     public TelaMaterial(TelaPrincipal telaPrincipal) {
         initComponents();
         ctlFornecedor = new ControleFornecedor();
@@ -50,8 +58,10 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         preencheComboFornecedor();
         preencheComboCategoria();
         this.telaPrincipal = telaPrincipal;
+        materials = new ArrayList<>();
+        carregarMateriais();
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -85,6 +95,7 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         setTitle("Cadastro/Consulta de Materiais");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
                 formInternalFrameClosing(evt);
@@ -139,7 +150,7 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -153,9 +164,16 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableCadastro.getTableHeader().setReorderingAllowed(false);
+        jTableCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableCadastroMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableCadastro);
         if (jTableCadastro.getColumnModel().getColumnCount() > 0) {
             jTableCadastro.getColumnModel().getColumn(0).setResizable(false);
+            jTableCadastro.getColumnModel().getColumn(1).setResizable(false);
             jTableCadastro.getColumnModel().getColumn(2).setResizable(false);
             jTableCadastro.getColumnModel().getColumn(3).setResizable(false);
             jTableCadastro.getColumnModel().getColumn(4).setResizable(false);
@@ -179,10 +197,20 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926366_new10.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setName("novo"); // NOI18N
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -367,18 +395,57 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
             material.setFornecedorId(fornecedor.getId());
             material.setDescricao(txtDescricao.getText());
             material.setDataCadastro(LocalDateTime.now());
-            material.setUnidade(cbCategoria.getSelectedItem().toString());
+            material.setUnidade(cbUnidadeMedida.getSelectedItem().toString());
             if (!txtCodigo.getText().trim().equals("")) {
                 material.setId(Long.parseLong(txtCodigo.getText()));
             }
             ctlMaterial.saveUpdate(material);
             Mensagens.sucess(this);
             //limpa
+            ControleCampos.habilitar(false, campos);
+            ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
             
         } catch (Exception e) {
             Mensagens.error(this, "Não foi possível salvar", e.getMessage());
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+        campos = new Object[]{txtDescricao, cbCategoria, cbFornecedor, cbUnidadeMedida, btnExcluir, btnNovo, btnSalvar};
+        ControleCampos.habilitar(false, campos);
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        ControleCampos.habilitar(true, campos);
+        txtDescricao.requestFocus();
+        ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
+
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void jTableCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCadastroMouseClicked
+        try {
+            if (jTableCadastro.getRowCount() > 0) {
+                txtCodigo.setText(modelo.getValueAt(jTableCadastro.getSelectedRow(), 0).toString());
+                
+                                
+                cbFornecedor.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 1));
+                cbCategoria.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 2));
+                
+                txtDescricao.setText(modelo.getValueAt(jTableCadastro.getSelectedRow(), 3).toString());
+                cbUnidadeMedida.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 5).toString());
+                ControleCampos.habilitar(true, campos);
+            }
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao selecionar", e.getMessage());
+        }
+    }//GEN-LAST:event_jTableCadastroMouseClicked
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        ControleCampos.habilitar(false, campos);
+        ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -408,37 +475,60 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
 
     public void preencheComboFornecedor() {
         try {
-
+            
             fornecedores = ctlFornecedor.getAll();
-
+            
             if (fornecedores.size() > 0) {
                 cbFornecedor.removeAllItems();
                 fornecedores.stream().forEach(f -> {
                     cbFornecedor.addItem(f);
                 });
             }
-
+            
         } catch (Exception e) {
             Mensagens.error(this, e.getMessage());
         }
     }
-
+    
     public void preencheComboCategoria() {
         try {
-
+            
             categorias = ctlCategoria.getAll();
-
+            
             if (categorias.size() > 0) {
                 cbCategoria.removeAllItems();
                 categorias.stream().forEach(c -> {
                     cbCategoria.addItem(c);
                 });
             }
-
+            
         } catch (Exception e) {
             Mensagens.error(this, e.getMessage());
         }
-
+        
     }
-
+    
+    private void carregarMateriais() {
+        try {
+            materials = ctlMaterial.getAll();
+            if (materials.size() > 0) {
+                modelo = (DefaultTableModel) jTableCadastro.getModel();
+                modelo.setRowCount(0);
+                materials.stream().forEach(m -> {
+                    modelo.addRow(new Object[]{
+                        m.getId(),
+                        m.getFornecedor(),
+                        m.getCategoria(),
+                        m.getDescricao(),
+                        m.getDataCadastro(),
+                        m.getUnidade()
+                    });
+                });
+                
+            }
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao carregar os dados", e.getMessage());
+        }
+    }
+    
 }

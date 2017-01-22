@@ -76,19 +76,28 @@ public class MaterialDAL extends ComandosSQL implements IMaterialDAL {
 
     @Override
     public List<Material> GetAll() throws SQLException {
-        String sql = "SELECT * FROM Material";
+        String sql = "SELECT * FROM Material ORDER BY id DESC LIMIT 20";
         executeQuery(sql, null);
         List<Material> materiais = new ArrayList<>();
+        FornecedorDAL fDal;
+        CategoriaDAL cDal;
         while (rs.next()) {
+            fDal = new FornecedorDAL();
+            cDal  = new CategoriaDAL();
             Material material = new Material();
             material.setId(rs.getLong("id"));
             material.setFornecedorId(rs.getLong("fornecedorId"));
+            material.setFornecedor( fDal.FindId(material.getFornecedorId()));
+            
             material.setCategoriaId(rs.getLong("categoriaId"));
+            material.setCategoria(cDal.FindId(material.getCategoriaId()));
             material.setDescricao(rs.getString("descricao"));
             material.setDataCadastro(rs.getTimestamp("dataCadastro").toLocalDateTime());
             material.setUnidade(rs.getString("unidade"));
             materiais.add(material);
             material = null;
+            fDal = null;
+            cDal = null;
         }
         rs.close();
         ps.closeOnCompletion();
