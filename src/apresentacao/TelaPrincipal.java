@@ -115,6 +115,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGap(0, 458, Short.MAX_VALUE)
         );
 
+        jMenuBar1.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+
         mnCadastro.setText("Cadastros");
 
         mnCadFornecedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
@@ -323,7 +325,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnDestino;
     private javax.swing.JButton btnEntrada;
     private javax.swing.JButton btnSaida;
-    private javax.swing.JDesktopPane jDesktopPane1;
+    public javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuItem mnCadCategoria;

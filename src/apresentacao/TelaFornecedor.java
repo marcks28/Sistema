@@ -22,6 +22,8 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
     private ControleFornecedor controleFornecedor;
     private DefaultTableModel modelo;
+    private TelaMaterial telaMaterial;
+
     /**
      * Creates new form TelaFornecedor
      */
@@ -29,6 +31,13 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         initComponents();
         controleFornecedor = new ControleFornecedor();
         carregaDadosTable();
+    }
+
+    public TelaFornecedor(TelaMaterial telaMaterial) {
+        initComponents();
+        controleFornecedor = new ControleFornecedor();
+        carregaDadosTable();
+        this.telaMaterial = telaMaterial;
     }
 
     /**
@@ -274,6 +283,9 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         if (JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?")) {
+            if (telaMaterial != null) {
+                telaMaterial.preencheComboFornecedor();
+            }
             this.dispose();
         }
     }//GEN-LAST:event_formInternalFrameClosing
@@ -338,14 +350,13 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
     private void FornecedorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FornecedorTableMouseClicked
         try {
-            if(FornecedorTable.getRowCount() > 0)
-            {
+            if (FornecedorTable.getRowCount() > 0) {
                 txtCodigo.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 0).toString());
                 txtRazao.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 1).toString());
                 txtCNPJ.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 2).toString());
                 txtTelafone.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 3).toString());
                 txtLogradouro.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 4).toString());
-            }           
+            }
         } catch (Exception e) {
             Mensagens.error(rootPane);
         }
@@ -373,16 +384,12 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtTelafone;
     // End of variables declaration//GEN-END:variables
 
-    
-    
-    private void carregaDadosTable()
-    {
+    private void carregaDadosTable() {
         try {
             List<Fornecedor> fornecedores = controleFornecedor.getAll();
             modelo = (DefaultTableModel) FornecedorTable.getModel();
             modelo.setRowCount(0);
-            if(fornecedores.size() > 0)
-            {
+            if (fornecedores.size() > 0) {
                 fornecedores.stream().forEach((Fornecedor f) -> {
                     modelo.addRow(new Object[]{
                         f.getId(),
@@ -393,9 +400,9 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
                     });
                 });
             }
-            
+
         } catch (SQLException e) {
-            Mensagens.error(this,"Erro ao carregar dados",e.getMessage());
+            Mensagens.error(this, "Erro ao carregar dados", e.getMessage());
         }
     }
 }

@@ -17,7 +17,7 @@ public class ControleMaterial implements IControle<Material>{
     
     @Override
     public void saveUpdate(Material entity) throws SQLException {
-        if(entity.getId() >= 0)
+        if(entity.getId() > 0)
         {
             dal.Update(entity);
             

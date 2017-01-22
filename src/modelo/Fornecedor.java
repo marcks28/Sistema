@@ -58,5 +58,11 @@ public class Fornecedor implements IModelBase{
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
     }   
+
+    @Override
+    public String toString() {
+        return this.razaoSocial;
+    }
+    
     
 }

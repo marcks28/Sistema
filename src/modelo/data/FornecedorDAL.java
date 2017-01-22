@@ -76,7 +76,7 @@ public class FornecedorDAL  extends ComandosSQL implements IFornecedorDAL{
          String sql = "SELECT * FROM Fornecedor";
         executeQuery(sql, null);
         List<Fornecedor> fornecedores = new ArrayList<>();
-        if(rs.next())
+        while(rs.next())
         {
             Fornecedor fornecedor = new Fornecedor();
             fornecedor.setId(rs.getLong("id"));

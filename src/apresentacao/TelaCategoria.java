@@ -25,12 +25,21 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
     private Categoria categoria;
     private ControleCategoria controle;
     private DefaultTableModel modelo, modelo2;
+    private TelaMaterial telaMaterial;
 
     public TelaCategoria() {
         initComponents();
         habilitar(false);
         controle = new ControleCategoria();
         carregar();
+    }
+
+    public TelaCategoria(TelaMaterial telaMaterial) {
+        initComponents();
+        habilitar(false);
+        controle = new ControleCategoria();
+        carregar();
+        this.telaMaterial = telaMaterial;
     }
 
     /**
@@ -380,7 +389,12 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
         if (JOptionPane.YES_OPTION == Mensagens.questionYesNo(this, "Deseja realmente sair?")) {
+            if(this.telaMaterial !=null)
+            {
+                telaMaterial.preencheComboCategoria();
+            }
             this.dispose();
+            
         }
     }//GEN-LAST:event_formInternalFrameClosing
 
@@ -396,34 +410,31 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         try {
-            if(jTable2.getRowCount() > 0)
-            {
-                txtCodigo.setText( modelo2.getValueAt(jTable2.getSelectedRow(), 0).toString());
+            if (jTable2.getRowCount() > 0) {
+                txtCodigo.setText(modelo2.getValueAt(jTable2.getSelectedRow(), 0).toString());
                 txtDescricao.setText(modelo2.getValueAt(jTable2.getSelectedRow(), 1).toString());
                 habilitar(true);
                 jTabControle.setSelectedIndex(0);
             }
-                       
+
         } catch (Exception e) {
             Mensagens.error(this);
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void txtPesquisarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisarKeyPressed
-        if( evt.getKeyCode() == KeyEvent.VK_ENTER )
-        {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             pesquisar();
         }
     }//GEN-LAST:event_txtPesquisarKeyPressed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         try {
-            if(jTable1.getRowCount() > 0)
-            {
-                txtCodigo.setText(  modelo.getValueAt(jTable1.getSelectedRow(), 0).toString());
+            if (jTable1.getRowCount() > 0) {
+                txtCodigo.setText(modelo.getValueAt(jTable1.getSelectedRow(), 0).toString());
                 txtDescricao.setText(modelo.getValueAt(jTable1.getSelectedRow(), 1).toString());
                 habilitar(true);
-            }            
+            }
         } catch (Exception e) {
             Mensagens.error(this, "Falha ao selecionar", e.getMessage());
         }
@@ -489,7 +500,7 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
                 && !txtPesquisar.getText().trim().isEmpty()) {
             try {
                 List<Categoria> categorias = new ArrayList<>();
-                categorias = controle.getAll( c -> c.getDescricao().contains(txtPesquisar.getText()) );
+                categorias = controle.getAll(c -> c.getDescricao().contains(txtPesquisar.getText()));
                 modelo2 = (DefaultTableModel) jTable2.getModel();
                 modelo2.setRowCount(0);
                 if (categorias.size() > 0) {
