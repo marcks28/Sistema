@@ -154,6 +154,11 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
             }
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(100);
@@ -410,6 +415,19 @@ public class TelaCategoria extends javax.swing.JInternalFrame {
             pesquisar();
         }
     }//GEN-LAST:event_txtPesquisarKeyPressed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            if(jTable1.getRowCount() > 0)
+            {
+                txtCodigo.setText(  modelo.getValueAt(jTable1.getSelectedRow(), 0).toString());
+                txtDescricao.setText(modelo.getValueAt(jTable1.getSelectedRow(), 1).toString());
+                habilitar(true);
+            }            
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao selecionar", e.getMessage());
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -5,6 +5,8 @@
  */
 package apresentacao;
 
+import java.awt.Dimension;
+
 /**
  *
  * @author edsonmarcks
@@ -14,13 +16,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private TelaCadastroUsuario telaCadastroUsuario;
     private TelaFornecedor telaFornecedor;
     private TelaCategoria telaCategoria;
+    private TelaMaterial telaMaterial;
+    private Dimension desktopSize, internalSize;
 
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() {
         initComponents();
-
+        desktopSize = this.getSize();
     }
 
     /**
@@ -63,6 +67,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/material.png"))); // NOI18N
         btnCadastrar.setToolTipText("Cadastro de materiais");
+        btnCadastrar.setBorder(null);
         btnCadastrar.setFocusable(false);
         btnCadastrar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCadastrar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -75,6 +80,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/entrada_estoque.png"))); // NOI18N
         btnEntrada.setToolTipText("Entrada de produtos no estoque");
+        btnEntrada.setBorder(null);
         btnEntrada.setFocusable(false);
         btnEntrada.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEntrada.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -82,6 +88,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnSaida.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/retirar_estoque2.png"))); // NOI18N
         btnSaida.setToolTipText("Efetue uma retirada no estoque");
+        btnSaida.setBorder(null);
         btnSaida.setFocusable(false);
         btnSaida.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSaida.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -89,10 +96,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         btnDestino.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/destino.png"))); // NOI18N
         btnDestino.setToolTipText("Cadastre as instituíções de ensino");
+        btnDestino.setBorder(null);
         btnDestino.setFocusable(false);
         btnDestino.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDestino.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btnDestino);
+
+        jDesktopPane1.setBackground(new java.awt.Color(238, 238, 238));
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -127,6 +137,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         mnCadMateriais.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
         mnCadMateriais.setText("Materiais");
+        mnCadMateriais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCadMateriaisActionPerformed(evt);
+            }
+        });
         mnCadastro.add(mnCadMateriais);
 
         mnCadInstituicoes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
@@ -203,7 +218,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
             telaCadastroUsuario.setVisible(true);
         }
 
-
     }//GEN-LAST:event_mnUsuarioActionPerformed
 
     private void mnCadFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadFornecedoresActionPerformed
@@ -244,6 +258,28 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnCadCategoriaActionPerformed
 
+    private void mnCadMateriaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadMateriaisActionPerformed
+        if (telaMaterial == null) {
+   
+                telaMaterial = new TelaMaterial();
+                internalSize = telaMaterial.getSize();
+                jDesktopPane1.add(telaMaterial);
+                telaMaterial.setLocation((desktopSize.width / 2  - internalSize.width / 2),
+                        (desktopSize.height - internalSize.height)/ 2);
+                telaMaterial.setVisible(true);
+
+        } else if (telaMaterial != null) {
+            if (telaMaterial.isClosed()) {
+                telaMaterial = new TelaMaterial();
+                internalSize = telaMaterial.getSize();
+                telaMaterial.setLocation((desktopSize.width/2 - internalSize.width/2),
+                        (desktopSize.height - internalSize.height)/2);
+                jDesktopPane1.add(telaMaterial);
+                telaMaterial.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_mnCadMateriaisActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -255,7 +291,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
