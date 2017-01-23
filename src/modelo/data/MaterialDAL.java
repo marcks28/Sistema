@@ -108,7 +108,7 @@ public class MaterialDAL extends ComandosSQL implements IMaterialDAL {
     public List<Material> GetAll(Predicate<Material> predicate) throws SQLException {
         List<Material> materiais = new ArrayList<>();
         try {
-            materiais = GetAll().stream().filter(predicate).collect(Collectors.<Material>toList());
+            materiais = All().stream().filter(predicate).collect(Collectors.<Material>toList());
         } catch (NoSuchElementException e) {
             System.err.println("Nenhum registro encontrado!");
         }
@@ -126,4 +126,35 @@ public class MaterialDAL extends ComandosSQL implements IMaterialDAL {
         return  material;
     }
 
+    
+    //Modificações
+    //Traz todos os registros do banco
+        public List<Material> All() throws SQLException {
+        String sql = "SELECT * FROM Material ORDER BY descricao";
+        executeQuery(sql, null);
+        List<Material> materiais = new ArrayList<>();
+        FornecedorDAL fDal;
+        CategoriaDAL cDal;
+        while (rs.next()) {
+            fDal = new FornecedorDAL();
+            cDal  = new CategoriaDAL();
+            Material material = new Material();
+            material.setId(rs.getLong("id"));
+            material.setFornecedorId(rs.getLong("fornecedorId"));
+            material.setFornecedor( fDal.FindId(material.getFornecedorId()));
+            
+            material.setCategoriaId(rs.getLong("categoriaId"));
+            material.setCategoria(cDal.FindId(material.getCategoriaId()));
+            material.setDescricao(rs.getString("descricao"));
+            material.setDataCadastro(rs.getTimestamp("dataCadastro").toLocalDateTime());
+            material.setUnidade(rs.getString("unidade"));
+            materiais.add(material);
+            material = null;
+            fDal = null;
+            cDal = null;
+        }
+        rs.close();
+        ps.closeOnCompletion();
+        return materiais;
+    }
 }

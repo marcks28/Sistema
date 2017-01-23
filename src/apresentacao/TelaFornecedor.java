@@ -31,6 +31,7 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         initComponents();
         controleFornecedor = new ControleFornecedor();
         carregaDadosTable();
+        habilite(false);
     }
 
     public TelaFornecedor(TelaMaterial telaMaterial) {
@@ -38,6 +39,7 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
         controleFornecedor = new ControleFornecedor();
         carregaDadosTable();
         this.telaMaterial = telaMaterial;
+        habilite(false);
     }
 
     /**
@@ -215,9 +217,16 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926366_new10.png"))); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.setName("novo"); // NOI18N
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926464_icons_save.png"))); // NOI18N
         btnSalvar.setText("Salvar");
+        btnSalvar.setName("salvar"); // NOI18N
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarActionPerformed(evt);
@@ -226,6 +235,7 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setName("excluir"); // NOI18N
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -234,6 +244,12 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
+        btnCancelar.setName("cancelar"); // NOI18N
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -311,14 +327,9 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             fornecedor.setLogradouro(txtLogradouro.getText());
             controleFornecedor.saveUpdate(fornecedor);
             Mensagens.sucess(this);
-            ControleCampos.limparCampos(new Object[]{
-                txtRazao,
-                txtCNPJ,
-                txtTelafone,
-                txtLogradouro,
-                txtCodigo
-            });
+            limpar();
             carregaDadosTable();
+            habilite(false);
 
         } catch (Exception e) {
             Mensagens.error(rootPane, "Falha na execução", e.getMessage());
@@ -334,13 +345,8 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             }
             controleFornecedor.delete(fornecedor);
             Mensagens.sucess(this);
-            ControleCampos.limparCampos(new Object[]{
-                txtRazao,
-                txtCNPJ,
-                txtTelafone,
-                txtLogradouro,
-                txtCodigo
-            });
+            limpar();
+            habilite(false);
             carregaDadosTable();
 
         } catch (SQLException e) {
@@ -356,11 +362,23 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
                 txtCNPJ.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 2).toString());
                 txtTelafone.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 3).toString());
                 txtLogradouro.setText(modelo.getValueAt(FornecedorTable.getSelectedRow(), 4).toString());
+                habilite(true);
+                txtRazao.requestFocus();;
             }
         } catch (Exception e) {
             Mensagens.error(rootPane);
         }
     }//GEN-LAST:event_FornecedorTableMouseClicked
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limpar();
+        habilite(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        limpar();
+        habilite(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -405,4 +423,27 @@ public class TelaFornecedor extends javax.swing.JInternalFrame {
             Mensagens.error(this, "Erro ao carregar dados", e.getMessage());
         }
     }
+
+    private void habilite(boolean b) {
+        ControleCampos.habilitar(b, new Object[]{
+            btnExcluir,
+            btnNovo,
+            btnSalvar,
+            txtRazao,
+            txtCNPJ,
+            txtTelafone,
+            txtLogradouro,
+            txtCodigo});
+    }
+
+    private void limpar() {
+        ControleCampos.limparCampos(new Object[]{
+            txtRazao,
+            txtCNPJ,
+            txtTelafone,
+            txtLogradouro,
+            txtCodigo
+        });
+    }
+
 }

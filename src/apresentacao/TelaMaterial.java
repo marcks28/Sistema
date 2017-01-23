@@ -11,6 +11,7 @@ import controle.ControleCategoria;
 import controle.ControleFornecedor;
 import controle.ControleMaterial;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -24,7 +25,7 @@ import modelo.Material;
  * @author edsonmarcks
  */
 public class TelaMaterial extends javax.swing.JInternalFrame {
-    
+
     private List<Fornecedor> fornecedores;
     private List<Categoria> categorias;
     private ControleFornecedor ctlFornecedor;
@@ -33,8 +34,9 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
     private TelaPrincipal telaPrincipal;
     private TelaFornecedor telaFornecedor;
     private List<Material> materials;
-    private DefaultTableModel modelo;
+    private DefaultTableModel modelo, modelo2;
     private Object[] campos;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     /**
      * Creates new form TelaMaterial
@@ -49,7 +51,7 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         materials = new ArrayList<>();
         carregarMateriais();
     }
-    
+
     public TelaMaterial(TelaPrincipal telaPrincipal) {
         initComponents();
         ctlFornecedor = new ControleFornecedor();
@@ -61,7 +63,7 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         materials = new ArrayList<>();
         carregarMateriais();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -87,7 +89,13 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         btnExcluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnNovo = new javax.swing.JButton();
+        lbModificacao = new javax.swing.JLabel();
         jPanelConsultas = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtPesquisa = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableConsulta = new javax.swing.JTable();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -178,6 +186,7 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
             jTableCadastro.getColumnModel().getColumn(3).setResizable(false);
             jTableCadastro.getColumnModel().getColumn(4).setResizable(false);
             jTableCadastro.getColumnModel().getColumn(5).setResizable(false);
+            jTableCadastro.getColumnModel().getColumn(5).setPreferredWidth(40);
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -194,6 +203,11 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926575_trash_bin.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setName("excluir"); // NOI18N
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/apresentacao/icons/1483926636_No.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -244,47 +258,51 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCancelar, btnExcluir, btnNovo, btnSalvar});
 
+        lbModificacao.setText(":::");
+
         javax.swing.GroupLayout jPanelCadastroLayout = new javax.swing.GroupLayout(jPanelCadastro);
         jPanelCadastro.setLayout(jPanelCadastroLayout);
         jPanelCadastroLayout.setHorizontalGroup(
             jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCadastroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                            .addComponent(txtDescricao)
-                            .addGap(18, 18, 18)
-                            .addComponent(cbUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                            .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                                    .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLbCodigo)
-                                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(6, 6, 6)
-                                    .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbFornecedor)
-                                        .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                                            .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnAddFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addComponent(lbDescricao))
-                            .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                                    .addGap(92, 92, 92)
-                                    .addComponent(lbUnidadeMedida))
-                                .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbCategoria)
-                                        .addGroup(jPanelCadastroLayout.createSequentialGroup()
-                                            .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(btnAddCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                .addComponent(txtDescricao)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbUnidadeMedida, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                        .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLbCodigo)
+                                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbFornecedor)
+                                            .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                                .addComponent(cbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnAddFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(lbDescricao))
+                                .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                        .addGap(92, 92, 92)
+                                        .addComponent(lbUnidadeMedida))
+                                    .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanelCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbCategoria)
+                                            .addGroup(jPanelCadastroLayout.createSequentialGroup()
+                                                .addComponent(cbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnAddCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                    .addComponent(lbModificacao))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanelCadastroLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddCategoria, btnAddFornecedor});
@@ -326,7 +344,9 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbModificacao)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jPanelCadastroLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAddCategoria, btnAddFornecedor, cbFornecedor});
@@ -335,15 +355,100 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Cadastros", jPanelCadastro);
 
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jLabel1.setText("Faça sua consulta:");
+
+        txtPesquisa.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtPesquisaCaretUpdate(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(377, 377, 377))
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jTableConsulta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cod", "Fornecedor", "Categoria", "Descrição", "Dt. Cadastro", "UND"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Long.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableConsulta.getTableHeader().setReorderingAllowed(false);
+        jTableConsulta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableConsultaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTableConsulta);
+        if (jTableConsulta.getColumnModel().getColumnCount() > 0) {
+            jTableConsulta.getColumnModel().getColumn(0).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jTableConsulta.getColumnModel().getColumn(1).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(2).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(3).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(4).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(5).setResizable(false);
+            jTableConsulta.getColumnModel().getColumn(5).setPreferredWidth(40);
+        }
+
         javax.swing.GroupLayout jPanelConsultasLayout = new javax.swing.GroupLayout(jPanelConsultas);
         jPanelConsultas.setLayout(jPanelConsultasLayout);
         jPanelConsultasLayout.setHorizontalGroup(
             jPanelConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 766, Short.MAX_VALUE)
+            .addGroup(jPanelConsultasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanelConsultasLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 191, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanelConsultasLayout.setVerticalGroup(
             jPanelConsultasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 511, Short.MAX_VALUE)
+            .addGroup(jPanelConsultasLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Consultas", jPanelConsultas);
@@ -404,7 +509,8 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
             //limpa
             ControleCampos.habilitar(false, campos);
             ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
-            
+            carregarMateriais();
+
         } catch (Exception e) {
             Mensagens.error(this, "Não foi possível salvar", e.getMessage());
         }
@@ -428,14 +534,14 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         try {
             if (jTableCadastro.getRowCount() > 0) {
                 txtCodigo.setText(modelo.getValueAt(jTableCadastro.getSelectedRow(), 0).toString());
-                
-                                
+
                 cbFornecedor.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 1));
                 cbCategoria.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 2));
-                
+
                 txtDescricao.setText(modelo.getValueAt(jTableCadastro.getSelectedRow(), 3).toString());
                 cbUnidadeMedida.setSelectedItem(modelo.getValueAt(jTableCadastro.getSelectedRow(), 5).toString());
                 ControleCampos.habilitar(true, campos);
+                lbModificacao.setText("Última alteração " + modelo.getValueAt(jTableCadastro.getSelectedRow(), 4));
             }
         } catch (Exception e) {
             Mensagens.error(this, "Falha ao selecionar", e.getMessage());
@@ -446,6 +552,52 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
         ControleCampos.habilitar(false, campos);
         ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.YES_NO_OPTION
+                == Mensagens.questionYesNo(this, "Deseja realmente excluir o registro?")) {
+            try {
+                Material m = ctlMaterial.findById(Long.parseLong(txtCodigo.getText()));
+                ctlMaterial.delete(m);
+                Mensagens.sucess(this);
+                ControleCampos.habilitar(false, campos);
+                ControleCampos.limparCampos(new Object[]{txtCodigo, txtDescricao});
+                carregarMateriais();
+
+            } catch (Exception e) {
+                Mensagens.error(this, "Falha ao excluir...", e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtPesquisaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtPesquisaCaretUpdate
+        if (txtPesquisa.getText().length() > 0) {
+            pesquisa(txtPesquisa.getText());
+        } else {
+            if (modelo2 != null) {
+                modelo2.setRowCount(0);
+            }
+        }
+    }//GEN-LAST:event_txtPesquisaCaretUpdate
+
+    private void jTableConsultaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableConsultaMouseClicked
+        try {
+            if (jTableConsulta.getRowCount() > 0) {
+                txtCodigo.setText(modelo2.getValueAt(jTableConsulta.getSelectedRow(), 0).toString());
+
+                cbFornecedor.setSelectedItem(modelo2.getValueAt(jTableConsulta.getSelectedRow(), 1));
+                cbCategoria.setSelectedItem(modelo2.getValueAt(jTableConsulta.getSelectedRow(), 2));
+
+                txtDescricao.setText(modelo2.getValueAt(jTableConsulta.getSelectedRow(), 3).toString());
+                cbUnidadeMedida.setSelectedItem(modelo2.getValueAt(jTableConsulta.getSelectedRow(), 5).toString());
+                ControleCampos.habilitar(true, campos);
+                lbModificacao.setText("Última alteração " + modelo2.getValueAt(jTableConsulta.getSelectedRow(), 4));
+                jTabbedPane1.setSelectedIndex(0);
+            }
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao selecionar", e.getMessage());
+        }
+    }//GEN-LAST:event_jTableConsultaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -458,56 +610,62 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<Categoria> cbCategoria;
     private javax.swing.JComboBox<Fornecedor> cbFornecedor;
     private javax.swing.JComboBox<String> cbUnidadeMedida;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLbCodigo;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelCadastro;
     private javax.swing.JPanel jPanelConsultas;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableCadastro;
+    private javax.swing.JTable jTableConsulta;
     private javax.swing.JLabel lbCategoria;
     private javax.swing.JLabel lbDescricao;
     private javax.swing.JLabel lbFornecedor;
+    private javax.swing.JLabel lbModificacao;
     private javax.swing.JLabel lbUnidadeMedida;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescricao;
+    private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 
     public void preencheComboFornecedor() {
         try {
-            
+
             fornecedores = ctlFornecedor.getAll();
-            
+
             if (fornecedores.size() > 0) {
                 cbFornecedor.removeAllItems();
                 fornecedores.stream().forEach(f -> {
                     cbFornecedor.addItem(f);
                 });
             }
-            
+
         } catch (Exception e) {
             Mensagens.error(this, e.getMessage());
         }
     }
-    
+
     public void preencheComboCategoria() {
         try {
-            
+
             categorias = ctlCategoria.getAll();
-            
+
             if (categorias.size() > 0) {
                 cbCategoria.removeAllItems();
                 categorias.stream().forEach(c -> {
                     cbCategoria.addItem(c);
                 });
             }
-            
+
         } catch (Exception e) {
             Mensagens.error(this, e.getMessage());
         }
-        
+
     }
-    
+
     private void carregarMateriais() {
         try {
             materials = ctlMaterial.getAll();
@@ -520,15 +678,41 @@ public class TelaMaterial extends javax.swing.JInternalFrame {
                         m.getFornecedor(),
                         m.getCategoria(),
                         m.getDescricao(),
-                        m.getDataCadastro(),
+                        m.getDataCadastro().format(formatter),
                         m.getUnidade()
                     });
                 });
-                
+
             }
         } catch (Exception e) {
             Mensagens.error(this, "Falha ao carregar os dados", e.getMessage());
         }
     }
-    
+
+    private void pesquisa(String consulta) {
+        try {
+            modelo2 = (DefaultTableModel) jTableConsulta.getModel();
+            materials = ctlMaterial.getAll(m -> m.getDescricao().contains(consulta));
+            if (materials.size() > 0) {
+
+                modelo2.setRowCount(0);
+                materials.stream().forEach(m -> {
+                    modelo2.addRow(new Object[]{
+                        m.getId(),
+                        m.getFornecedor(),
+                        m.getCategoria(),
+                        m.getDescricao(),
+                        m.getDataCadastro().format(formatter),
+                        m.getUnidade()
+                    });
+                });
+
+            } else {
+                modelo2.setRowCount(0);
+
+            }
+        } catch (Exception e) {
+            Mensagens.error(this, "Falha ao carregar os dados", e.getMessage());
+        }
+    }
 }
